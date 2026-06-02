@@ -26,7 +26,6 @@ Web services para probar como consumir ws desde react (en la semana 7 y 8), este
    - 5.4 [Probar con Postman en GitHub Codespaces](#54-probar-con-postman-en-github-codespaces)
 6. [CORS: ¿Por qué es necesario en el backend?](#6-cors-por-qué-es-necesario-en-el-backend)
 7. [Flujo completo del sistema](#7-flujo-completo-del-sistema)
-8. [Actividades sugeridas](#8-actividades-sugeridas)
 
 ---
 
@@ -421,13 +420,3 @@ El flujo de una petición POST para crear un jedi es:
 7. `curl` imprime la respuesta en la terminal.
 
 ---
-
-## 8. Actividades
-
-Una vez que tengas el ejercicio funcionando, te proponemos los siguientes retos para profundizar:
-
-1. **Agrega un nuevo campo** a la tabla `jedi` (por ejemplo, `nivel_fuerza INT`) y modifica los endpoints de Flask para soportarlo.
-2. **Implementa un endpoint de búsqueda**: `GET /jedi?nombre=luke` que filtre jedis por nombre usando `LIKE` en SQL.
-3. **Manejo de errores mejorado**: qué pasa si insertas dos jedis con el mismo email? Captura el error de duplicado (`errno 1062`) y retorna un mensaje claro al cliente.
-4. **Prueba con Postman Collections**: crea una colección en Postman con las 5 peticiones del CRUD y compártela con tus compañeros exportando el archivo JSON.
-5. **Analiza los encabezados HTTP**: en Postman, revisa los *response headers* de cada petición. Identifica `Content-Type`, `Access-Control-Allow-Origin` y el código de estado HTTP.
