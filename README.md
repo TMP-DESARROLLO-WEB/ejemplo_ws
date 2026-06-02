@@ -1,4 +1,4 @@
-# Consumir WS desde react
+# Ejemplo de servicios Web
 Web services para probar como consumir ws desde react, este repositorio contiene los servicios web.
 
 ## Configuración de MySQL
