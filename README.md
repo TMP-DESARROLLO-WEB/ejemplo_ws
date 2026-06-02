@@ -25,6 +25,9 @@ Esto debe generar una tabla.
 pip install mysql-connector-python flask flask-cors
 ```
 
+### Explora el contenido del archivo crudMySQL.py
+Observa como se conecta a la instancia base de datos que creaste al inicio de este ejercicio, usa las credenciales que se definieron cuando creaste el contenedor docker.
+
 ### En la terminal ejecuta
 ```sh
 python crudMySQL.py
