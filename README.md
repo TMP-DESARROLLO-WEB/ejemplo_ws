@@ -319,15 +319,7 @@ Respuesta esperada:
 {"message": "Jedi creado", "id_jedi": 3}
 ```
 
-**4. Actualizar un jedi (método PUT):**
-
-```bash
-curl -X PUT http://localhost:5000/jedi/1 \
-     -H "Content-Type: application/json" \
-     -d '{"nombre_jedi": "Luke S.", "email_jedi": "lukeskywalker@jedi.com"}'
-```
-
-**5. Eliminar un jedi (método DELETE):**
+**4. Eliminar un jedi (método DELETE):**
 
 ```bash
 curl -X DELETE http://localhost:5000/jedi/2
