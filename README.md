@@ -4,7 +4,33 @@ Web services para probar como consumir ws desde react, este repositorio contiene
 
 ---
 
-## 📚 Conceptos que aprenderás en este ejercicio
+## Índice
+
+1. [Conceptos que aprenderás en este ejercicio](#1-conceptos-que-aprenderás-en-este-ejercicio)
+2. [Estructura del repositorio](#2-estructura-del-repositorio)
+3. [Configuración de MySQL](#3-configuración-de-mysql)
+   - 3.1 [¿Qué es Docker y por qué lo usamos aquí?](#31-qué-es-docker-y-por-qué-lo-usamos-aquí)
+   - 3.2 [Iniciar la instancia de MySQL en Docker](#32-iniciar-la-instancia-de-mysql-en-docker)
+   - 3.3 [El archivo `jedi.sql`: definición del esquema](#33-el-archivo-jedisql-definición-del-esquema)
+   - 3.4 [Conectarse al contenedor a través de la herramienta de línea de comandos](#34-conectarse-al-contenedor-a-través-de-la-herramienta-de-línea-de-comandos)
+4. [Probar código Python que se conecta al servidor](#4-probar-código-python-que-se-conecta-al-servidor)
+   - 4.1 [El conector `mysql-connector-python`: ¿qué es y cómo funciona?](#41-el-conector-mysql-connector-python-qué-es-y-cómo-funciona)
+   - 4.2 [Instala conector python-MySQL y flask](#42-instala-conector-python-mysql-y-flask)
+   - 4.3 [Explora el contenido del archivo `crudMySQL.py`](#43-explora-el-contenido-del-archivo-crudmysqlpy)
+   - 4.4 [En la terminal ejecuta](#44-en-la-terminal-ejecuta)
+   - 4.5 [Conectarse al contenedor para verificar que se hayan insertado los datos](#45-conectarse-al-contenedor-para-verificar-que-se-hayan-insertado-los-datos)
+5. [Correr Servicios Web](#5-correr-servicios-web)
+   - 5.1 [¿Qué es Flask y cómo construye servicios REST?](#51-qué-es-flask-y-cómo-construye-servicios-rest)
+   - 5.2 [Corre `ws_jedi.py`](#52-corre-ws_jedipy)
+   - 5.3 [¿Qué es `curl` y cómo usarlo?](#53-qué-es-curl-y-cómo-usarlo)
+   - 5.4 [Probar con Postman en GitHub Codespaces](#54-probar-con-postman-en-github-codespaces)
+6. [CORS: ¿Por qué es necesario en el backend?](#6-cors-por-qué-es-necesario-en-el-backend)
+7. [Flujo completo del sistema](#7-flujo-completo-del-sistema)
+8. [Actividades sugeridas](#8-actividades-sugeridas)
+
+---
+
+## 1. Conceptos que aprenderás en este ejercicio
 
 Este repositorio está diseñado para que explores de forma práctica la **arquitectura de una aplicación backend completa**: desde la base de datos hasta la exposición de un API REST consumible desde cualquier cliente HTTP.
 
@@ -20,7 +46,7 @@ Los conceptos centrales son:
 
 ---
 
-## 🗂️ Estructura del repositorio
+## 2. Estructura del repositorio
 
 ```
 ejemplo_ws/
@@ -33,13 +59,13 @@ ejemplo_ws/
 
 ---
 
-## ⚙️ Configuración de MySQL
+## 3. Configuración de MySQL
 
-### ¿Qué es Docker y por qué lo usamos aquí?
+### 3.1 ¿Qué es Docker y por qué lo usamos aquí?
 
 **Docker** es una plataforma de contenedores que permite ejecutar aplicaciones en entornos aislados y reproducibles. En este ejercicio usamos Docker para levantar una instancia de MySQL sin necesidad de instalarlo directamente en el sistema operativo del Codespace. El contenedor tiene todo lo que MySQL necesita, y lo comunicamos con el puerto `3306` del host.
 
-### Iniciar la instancia de MySQL en Docker
+### 3.2 Iniciar la instancia de MySQL en Docker
 
 Para iniciar una instancia de **MySQL** en un contenedor Docker, ejecuta el siguiente comando en la terminal de tu **GitHub Codespace**:
 
@@ -58,7 +84,7 @@ docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=contrasena -e MYSQL_DAT
 | `-d` | Ejecuta el contenedor en modo *detached* (en segundo plano) |
 | `mysql:latest` | Usa la imagen oficial de MySQL más reciente desde Docker Hub |
 
-### El archivo `jedi.sql`: definición del esquema
+### 3.3 El archivo `jedi.sql`: definición del esquema
 
 El archivo `jedi.sql` contiene el DDL (*Data Definition Language*) que crea la tabla `jedi` dentro de la base de datos `testdb`:
 
@@ -78,7 +104,7 @@ CREATE TABLE jedi (
 - `VARCHAR(100) NOT NULL`: cadena de texto de hasta 100 caracteres que **no puede estar vacía**.
 - `UNIQUE NOT NULL` en `email_jedi`: garantiza que no existan dos jedis con el mismo correo electrónico. Esta es una **restricción de integridad**.
 
-### Conectarse al contenedor a través de la herramienta de linea de comandos
+### 3.4 Conectarse al contenedor a través de la herramienta de linea de comandos
 
 El siguiente comando ejecuta el script SQL dentro del contenedor para crear la tabla:
 
@@ -96,9 +122,9 @@ Esto debe generar una tabla.
 
 ---
 
-## 🐍 Probar código Python que se conecta al servidor
+## 4. Probar código Python que se conecta al servidor
 
-### El conector `mysql-connector-python`: ¿qué es y cómo funciona?
+### 4.1 El conector `mysql-connector-python`: ¿qué es y cómo funciona?
 
 Un **conector de base de datos** (también llamado *driver*) es una librería que implementa un protocolo de comunicación entre tu lenguaje de programación y el motor de base de datos. En este caso, `mysql-connector-python` es el driver oficial de Oracle para conectar Python con MySQL.
 
@@ -109,7 +135,7 @@ El flujo de trabajo es siempre el mismo:
 4. **Confirmar cambios** → para INSERT/UPDATE/DELETE, debes llamar a `conn.commit()`.
 5. **Cerrar** → `cursor.close()` y `conn.close()` liberan los recursos.
 
-### Instala conector python-MySQL y flask
+### 4.2 Instala conector python-MySQL y flask
 
 ```bash
 pip install mysql-connector-python flask flask-cors
@@ -117,11 +143,11 @@ pip install mysql-connector-python flask flask-cors
 
 - **`mysql-connector-python`**: driver para conectar Python con MySQL.
 - **`flask`**: microframework web que permite crear servicios HTTP con pocas líneas de código.
-- **`flask-cors`**: extensión de Flask que agrega soporte para CORS (ver sección más abajo).
+- **`flask-cors`**: extensión de Flask que agrega soporte para CORS (ver sección [6](#6-cors-por-qué-es-necesario-en-el-backend)).
 
-### Explora el contenido del archivo `crudMySQL.py`
+### 4.3 Explora el contenido del archivo `crudMySQL.py`
 
-Observa como se conecta a la instancia de base de datos que creaste al inicio de este ejercicio, usa las credenciales que se definieron cuando creaste el contenedor docker.
+Observa como se conecta a la instancia base de datos que creaste al inicio de este ejercicio, usa las credenciales que se definieron cuando creaste el contenedor docker.
 
 ```python
 import mysql.connector
@@ -156,7 +182,7 @@ def create_jedi(nombre_jedi, email_jedi):
 
 > **Nota sobre SQL injection:** el uso de `%s` como *placeholder* (en lugar de concatenar strings) es fundamental para evitar inyección SQL. El driver se encarga de escapar los valores correctamente.
 
-### En la terminal ejecuta
+### 4.4 En la terminal ejecuta
 
 ```bash
 python crudMySQL.py
@@ -164,7 +190,7 @@ python crudMySQL.py
 
 Esto creará un par de registros en la tabla.
 
-### Conectarse al contenedor a través de la herramienta de linea de comandos para verificar que se hayan insertado los datos
+### 4.5 Conectarse al contenedor a través de la herramienta de linea de comandos para verificar que se hayan insertado los datos
 
 ```bash
 docker exec -it mysql-container mysql -u root -pcontrasena
@@ -197,9 +223,9 @@ Para salir escriba *quit* y presione enter.
 
 ---
 
-## 🌐 Correr Servicios Web
+## 5. Correr Servicios Web
 
-### ¿Qué es Flask y cómo construye servicios REST?
+### 5.1 ¿Qué es Flask y cómo construye servicios REST?
 
 **Flask** es un microframework web para Python. A diferencia de frameworks más grandes (como Django), Flask es minimalista: tú decides qué componentes agregar. Es ideal para construir **APIs REST**.
 
@@ -218,7 +244,7 @@ El archivo `ws_jedi.py` implementa el CRUD completo del recurso `jedi`:
 | `/jedi/<id>` | PUT | Actualizar un jedi | 200 OK |
 | `/jedi/<id>` | DELETE | Eliminar un jedi | 200 OK |
 
-### Corre `ws_jedi.py`
+### 5.2 Corre `ws_jedi.py`
 
 ```bash
 python ws_jedi.py
@@ -233,7 +259,7 @@ Flask levantará el servidor en `http://localhost:5000`. Verás en la terminal u
 
 Abrir **otra terminal** para probar los servicios web (el servidor debe seguir corriendo en la primera).
 
-### ¿Qué es `curl` y cómo usarlo?
+### 5.3 ¿Qué es `curl` y cómo usarlo?
 
 `curl` (*Client URL*) es una herramienta de línea de comandos para transferir datos usando protocolos de red, principalmente HTTP. Es la forma más directa de probar una API sin necesidad de una interfaz gráfica.
 
@@ -258,8 +284,6 @@ Respuesta esperada (JSON con la lista de jedis):
 ]
 ```
 
----
-
 **2. Servicio web para consultar solo un jedi (método GET). Deberás probarlo así:**
 
 ```bash
@@ -277,8 +301,6 @@ Si el ID no existe, el servidor responde con `404 Not Found`:
 ```json
 {"error": "Jedi no encontrado"}
 ```
-
----
 
 **3. Servicio web para crear solo un jedi (método POST). Deberás probarlo así:**
 
@@ -298,8 +320,6 @@ Respuesta esperada:
 {"message": "Jedi creado", "id_jedi": 3}
 ```
 
----
-
 **4. Actualizar un jedi (método PUT):**
 
 ```bash
@@ -308,23 +328,19 @@ curl -X PUT http://localhost:5000/jedi/1 \
      -d '{"nombre_jedi": "Luke S.", "email_jedi": "lukeskywalker@jedi.com"}'
 ```
 
----
-
 **5. Eliminar un jedi (método DELETE):**
 
 ```bash
 curl -X DELETE http://localhost:5000/jedi/2
 ```
 
----
-
-### Probar con Postman en GitHub Codespaces
+### 5.4 Probar con Postman en GitHub Codespaces
 
 **Postman** es una aplicación gráfica para diseñar, ejecutar y documentar peticiones HTTP. Es ampliamente usada en equipos de desarrollo para colaborar en la definición y prueba de APIs.
 
 Para que Postman (ejecutándose en tu computadora local) pueda alcanzar el servidor Flask que corre dentro de tu Codespace, necesitas **hacer público el puerto 5000**. Esto es necesario porque el Codespace es una máquina virtual en la nube, y por defecto sus puertos sólo son accesibles internamente.
 
-#### Cómo hacer público el puerto 5000 en GitHub Codespaces
+#### 5.4.1 Cómo hacer público el puerto 5000 en GitHub Codespaces
 
 1. En VS Code (dentro del Codespace), abre la pestaña **Ports** (Puertos), que aparece junto a la terminal.
 2. Localiza el puerto **5000** en la lista (aparece automáticamente cuando Flask está corriendo).
@@ -333,7 +349,7 @@ Para que Postman (ejecutándose en tu computadora local) pueda alcanzar el servi
 
 > ⚠️ **Importante:** al hacer el puerto público, cualquier persona con la URL puede hacer peticiones a tu servidor. Esto es aceptable para propósitos de desarrollo y prueba, pero nunca dejes puertos públicos con credenciales reales o datos sensibles.
 
-#### Usar la URL pública en Postman
+#### 5.4.2 Usar la URL pública en Postman
 
 1. Abre Postman y crea una nueva petición.
 2. Selecciona el método (GET, POST, etc.).
@@ -346,7 +362,7 @@ Para que Postman (ejecutándose en tu computadora local) pueda alcanzar el servi
 
 ---
 
-## CORS: ¿Por qué es necesario en el backend?
+## 6. CORS: ¿Por qué es necesario en el backend?
 
 Cuando el frontend (en el puerto `5173`) le hace una petición al backend (en el puerto `5000`), el navegador detecta que son **orígenes distintos** y bloquea la respuesta por seguridad. Esto se llama la política **Same-Origin Policy**.
 
@@ -371,7 +387,7 @@ Esto le agrega el encabezado `Access-Control-Allow-Origin: *` a todas las respue
 
 ---
 
-## 🔍 Flujo completo del sistema
+## 7. Flujo completo del sistema
 
 Para consolidar todos los conceptos, el siguiente diagrama muestra cómo interactúan los componentes en este ejercicio:
 
@@ -406,7 +422,7 @@ El flujo de una petición POST para crear un jedi es:
 
 ---
 
-## 🧩 Actividades sugeridas
+## 8. Actividades
 
 Una vez que tengas el ejercicio funcionando, te proponemos los siguientes retos para profundizar:
 
