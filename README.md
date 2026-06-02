@@ -1,6 +1,6 @@
 # Ejemplo de Servicios Web
 
-Web services para probar como consumir ws desde react, este repositorio contiene los servicios web.
+Web services para probar como consumir ws desde react (en la semana 7 y 8), este repositorio contiene los servicios web.
 
 ---
 
